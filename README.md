@@ -22,7 +22,7 @@ Sync Gradle and import Swipe-Deck into your project
 import com.daprlabs.aaron.swipedeck.SwipeDeck;
 ```
 
-## Example 
+## Example
 
 Start by defining a card view.
 Note that you can use any view type of your choice, cardviews provide you with access to shadows
@@ -131,7 +131,7 @@ Next Swipe Deck takes an adapter in much the same way as other adapter views:
                 // normally use a viewholder
                 v = inflater.inflate(R.layout.test_card2, parent, false);
             }
-            
+
             ImageView imageView = (ImageView) v.findViewById(R.id.offer_image);
             Picasso.with(context).load(R.drawable.food).fit().centerCrop().into(imageView);
             TextView textView = (TextView) v.findViewById(R.id.sample_text);
@@ -257,11 +257,6 @@ Now we simply give our card deck an adapter and perhaps a callback from our Acti
 ```
 # ScreenShots
 
-![Screenshot](http://i.imgur.com/bijdPhg.png?1)
-
-![Screenshot](http://i.imgur.com/j1Npxpn.png?1)
-
-![Screenshot](http://i.imgur.com/J6lwtGg.png?1)
-
-
-
+![Screenshot](screenshots/scrn 1.png)
+![Screenshot](screenshots/scrn 2.png)
+![Screenshot](screenshots/scrn 3.png)

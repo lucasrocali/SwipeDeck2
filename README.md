@@ -257,6 +257,7 @@ Now we simply give our card deck an adapter and perhaps a callback from our Acti
 ```
 # ScreenShots
 
-![Screenshot](screenshots/scrn 1.png)
-![Screenshot](screenshots/scrn 2.png)
-![Screenshot](screenshots/scrn 3.png)
+
+<img src="screenshots/scrn 1.png" width="200px" />
+<img src="screenshots/scrn 2.png" width="200px" />
+<img src="screenshots/scrn 3.png" width="200px" />

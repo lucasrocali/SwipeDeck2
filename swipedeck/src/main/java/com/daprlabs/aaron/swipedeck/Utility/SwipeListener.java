@@ -24,8 +24,6 @@ public class SwipeListener implements View.OnTouchListener {
     private float initialXPress;
     private float initialYPress;
     private ViewGroup parent;
-    private float parentWidth;
-    private int paddingLeft;
 
     private View card;
     SwipeCallback callback;
@@ -40,10 +38,8 @@ public class SwipeListener implements View.OnTouchListener {
         this.initialY = initialY;
         this.callback = callback;
         this.parent = parent;
-        this.parentWidth = parent.getWidth();
         this.ROTATION_DEGREES = rotation;
         this.OPACITY_END = opacityEnd;
-        this.paddingLeft = parent.getPaddingLeft();
     }
 
     private boolean click = true;
@@ -122,12 +118,12 @@ public class SwipeListener implements View.OnTouchListener {
 
                 //card.setRotation
                 float distobjectX = posX - initialX;
-                float rotation = ROTATION_DEGREES * 2.f * distobjectX / parentWidth;
+                float rotation = ROTATION_DEGREES * 2.f * distobjectX / parent.getWidth();
                 card.setRotation(rotation);
 
                 if (rightView != null && leftView != null) {
                     //set alpha of left and right image
-                    float alpha = (((posX - paddingLeft) / (parentWidth * OPACITY_END)));
+                    float alpha = (((posX - parent.getPaddingLeft()) / (parent.getWidth() * OPACITY_END)));
                     //float alpha = (((posX - paddingLeft) / parentWidth) * ALPHA_MAGNITUDE );
                     //Log.i("alpha: ", Float.toString(alpha));
                     rightView.setAlpha(alpha);
@@ -221,12 +217,12 @@ public class SwipeListener implements View.OnTouchListener {
 
     private boolean cardBeyondLeftBorder() {
         //check if cards middle is beyond the left quarter of the screen
-        return (card.getX() + (card.getWidth() / 2) < (parentWidth / 4.f));
+        return (card.getX() + (card.getWidth() / 2) < (parent.getWidth() / 4.f));
     }
 
     private boolean cardBeyondRightBorder() {
         //check if card middle is beyond the right quarter of the screen
-        return (card.getX() + (card.getWidth() / 2) > ((parentWidth / 4.f) * 3));
+        return (card.getX() + (card.getWidth() / 2) > ((parent.getWidth() / 4.f) * 3));
     }
 
     private ViewPropertyAnimator resetCardPosition() {
@@ -250,7 +246,7 @@ public class SwipeListener implements View.OnTouchListener {
     private ViewPropertyAnimator animateOffScreenLeft(int duration) {
         return card.animate()
                 .setDuration(duration)
-                .x(-(parentWidth))
+                .x(-(parent.getWidth()))
                 .y(0)
                 .rotation(-30);
     }
@@ -258,7 +254,7 @@ public class SwipeListener implements View.OnTouchListener {
     private ViewPropertyAnimator animateOffScreenRight(int duration) {
         return card.animate()
                 .setDuration(duration)
-                .x(parentWidth * 2)
+                .x(parent.getWidth() * 2)
                 .y(0)
                 .rotation(30);
     }

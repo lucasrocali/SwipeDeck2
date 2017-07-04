@@ -28,6 +28,7 @@ public class SwipeListener implements View.OnTouchListener {
     private View card;
     SwipeCallback callback;
     private boolean deactivated;
+    private View topView;
     private View rightView;
     private View leftView;
 
@@ -121,13 +122,15 @@ public class SwipeListener implements View.OnTouchListener {
                 float rotation = ROTATION_DEGREES * 2.f * distobjectX / parent.getWidth();
                 card.setRotation(rotation);
 
-                if (rightView != null && leftView != null) {
+                if (rightView != null && leftView != null && topView != null) {
                     //set alpha of left and right image
-                    float alpha = (((posX - parent.getPaddingLeft()) / (parent.getWidth() * OPACITY_END)));
+                    float alphaX = (((posX - parent.getPaddingLeft()) / (parent.getWidth() * OPACITY_END)));
+                    float alphaY = (((posY - parent.getPaddingTop()) / (parent.getHeight() * OPACITY_END)));
                     //float alpha = (((posX - paddingLeft) / parentWidth) * ALPHA_MAGNITUDE );
                     //Log.i("alpha: ", Float.toString(alpha));
-                    rightView.setAlpha(alpha);
-                    leftView.setAlpha(-alpha);
+                    rightView.setAlpha(alphaX);
+                    leftView.setAlpha(-alphaX);
+                    topView.setAlpha(-alphaY);
                 }
 
                 break;
@@ -210,9 +213,40 @@ public class SwipeListener implements View.OnTouchListener {
                     });
             callback.cardSwipedRight(card);
             this.deactivated = true;
+        }  else if (cardBellowTopBorder()) {
+            animateOffScreenTop(SwipeDeck.ANIMATION_DURATION)
+                    .setListener(new Animator.AnimatorListener() {
+
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            callback.cardOffScreen(card);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+            callback.cardSwipedTop(card);
+            this.deactivated = true;
         } else {
             resetCardPosition();
         }
+    }
+
+    private boolean cardBellowTopBorder() {
+        //check if cards middle is bellow the top quarter of the screen
+        return (card.getY() + (card.getHeight() / 2) < (parent.getHeight() / 4.f));
     }
 
     private boolean cardBeyondLeftBorder() {
@@ -231,6 +265,9 @@ public class SwipeListener implements View.OnTouchListener {
         }
         if (leftView != null) {
             leftView.setAlpha(0);
+        }
+        if (topView != null) {
+            topView.setAlpha(0);
         }
 
         //todo: figure out why i have to set translationX to 0
@@ -259,6 +296,14 @@ public class SwipeListener implements View.OnTouchListener {
                 .rotation(30);
     }
 
+    private ViewPropertyAnimator animateOffScreenTop(int duration) {
+        return card.animate()
+                .setDuration(duration)
+                .x(0)
+                .y(-(parent.getHeight() * 2))
+                .rotation(0);
+    }
+
     public void swipeCardLeft(int duration) {
         animateOffScreenLeft(duration);
     }
@@ -267,12 +312,20 @@ public class SwipeListener implements View.OnTouchListener {
         animateOffScreenRight(duration);
     }
 
+    public void swipeCardTop(int duration) {
+        animateOffScreenTop(duration);
+    }
+
     public void setRightView(View image) {
         this.rightView = image;
     }
 
     public void setLeftView(View image) {
         this.leftView = image;
+    }
+
+    public void setTopView(View image) {
+        this.topView = image;
     }
 
     //animate under cards by 0 - 100% of card spacing

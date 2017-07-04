@@ -45,6 +45,7 @@ public class SwipeDeck extends FrameLayout {
 
     private int leftImageResource;
     private int rightImageResource;
+    private int topImageResource;
 
     private int adapterIndex = 0;
 
@@ -218,6 +219,9 @@ public class SwipeDeck extends FrameLayout {
             if (rightImageResource != 0) {
                 card.setRightImageResource(rightImageResource);
             }
+            if (topImageResource != 0) {
+                card.setTopImageResource(topImageResource);
+            }
 
             card.setId(viewId);
 
@@ -255,6 +259,9 @@ public class SwipeDeck extends FrameLayout {
             }
             if (rightImageResource != 0) {
                 card.setRightImageResource(rightImageResource);
+            }
+            if (topImageResource != 0) {
+                card.setTopImageResource(topImageResource);
             }
 
             card.setId(viewId);
@@ -350,6 +357,20 @@ public class SwipeDeck extends FrameLayout {
             deck.removeFront();
         }
     }
+    /**
+     * Swipe card to the top side.
+     *
+     * @param duration animation duration in milliseconds
+     */
+    public void swipeTopCardTop(int duration) {
+        if (deck.size() > 0) {
+            deck.get(0).swipeCardTop(duration);
+            if (callback != null) {
+                callback.cardSwipedTop(deck.get(0).getId());
+            }
+            deck.removeFront();
+        }
+    }
 
     public void unSwipeCard() {
         addLastView();
@@ -388,6 +409,10 @@ public class SwipeDeck extends FrameLayout {
         rightImageResource = imageResource;
     }
 
+    public void setTopImage(int imageResource) {
+        topImageResource = imageResource;
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setZTranslations() {
         //this is only needed to add shadows to cardviews on > lollipop
@@ -403,6 +428,8 @@ public class SwipeDeck extends FrameLayout {
         void cardSwipedLeft(long itemId);
 
         void cardSwipedRight(long itemId);
+
+        void cardSwipedTop(long itemId);
 
         /**
          * Check whether we can start dragging view with provided id.
@@ -442,6 +469,18 @@ public class SwipeDeck extends FrameLayout {
             deck.removeFront();
             if (callback != null) {
                 callback.cardSwipedRight(viewId);
+            }
+        }
+
+        @Override
+        public void cardSwipedTop(View card) {
+            Log.d(TAG, "card swiped top");
+            if (!(deck.getFront().getCard() == card)) {
+                Log.e("SWIPE ERROR: ", "card on top of deck not equal to card swiped");
+            }
+            deck.removeFront();
+            if (callback != null) {
+                callback.cardSwipedTop(viewId);
             }
         }
 

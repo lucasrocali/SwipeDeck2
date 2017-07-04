@@ -76,6 +76,12 @@ public class CardContainer {
         swipeListener.setRightView(right);
     }
 
+    public void setTopImageResource(int topImageResource) {
+        View top = view.findViewById(topImageResource);
+        top.setAlpha(0);
+        swipeListener.setTopView(top);
+    }
+
     public void setupSwipeListener() {
         this.swipeListener = new SwipeListener(
                 view,
@@ -116,5 +122,11 @@ public class CardContainer {
         swipeDuration = duration;
         setSwipeEnabled(false);
         swipeListener.swipeCardRight(duration);
+    }
+
+    public void swipeCardTop(int duration) {
+        swipeDuration = duration;
+        setSwipeEnabled(false);
+        swipeListener.swipeCardTop(duration);
     }
 }

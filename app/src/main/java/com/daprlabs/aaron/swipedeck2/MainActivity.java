@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + stableId);
 
             }
+            @Override
+            public void cardSwipedTop(long stableId) {
+                Log.i("MainActivity", "card was swiped top, position in adapter: " + stableId);
+
+            }
 
             @Override
             public boolean isDragEnabled(long itemId) {
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         cardStack.setLeftImage(R.id.left_image);
         cardStack.setRightImage(R.id.right_image);
+        cardStack.setTopImage(R.id.top_image);
 
         Button btn = (Button) findViewById(R.id.button_left);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +83,14 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardStack.swipeTopCardRight(180);
+                cardStack.swipeTopCardRight(500);
+            }
+        });
+        Button btnt = (Button) findViewById(R.id.button_top);
+        btnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardStack.swipeTopCardTop(500);
             }
         });
 
